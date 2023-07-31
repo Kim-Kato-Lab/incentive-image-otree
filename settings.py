@@ -28,7 +28,7 @@ SESSION_CONFIGS = [
         app_sequence=[
             'donation'
         ],
-        num_demo_participants=2,
+        num_demo_participants=4
     )
 ]
 

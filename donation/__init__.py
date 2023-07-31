@@ -1,5 +1,5 @@
 from otree.api import *
-
+import random
 
 author = 'Hiroki Kato'
 doc = """
@@ -11,7 +11,7 @@ into account.
 class C(BaseConstants):
     NAME_IN_URL = 'donation'
     PLAYERS_PER_GROUP = 2
-    NUM_ROUNDS = 2
+    NUM_ROUNDS = 4
     HIGH_ROLE = 'High earner'
     LOW_ROLE = 'Low earner'
 
@@ -28,6 +28,17 @@ class Player(BasePlayer):
     donate = models.CurrencyField(min=0)
 
 # FUNCTIONS
+def creating_session(subsession: Subsession):
+    mat = subsession.get_group_matrix()
+    new_mat = []
+
+    for row in mat:
+        l = random.sample(row, len(row))
+        new_mat.append(l)
+    
+    subsession.set_group_matrix(new_mat)
+
+
 def set_endowment(group: Group):
     high = group.get_player_by_role(C.HIGH_ROLE)
     low = group.get_player_by_role(C.LOW_ROLE)
@@ -69,7 +80,6 @@ class ResultsWaitPage(WaitPage):
 
 class Results(Page):
     pass
-
 
 page_sequence = [
     WaitStart,
