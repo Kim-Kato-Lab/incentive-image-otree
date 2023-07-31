@@ -1,22 +1,17 @@
 from otree.api import *
 
 
-
+author = 'Hiroki Kato'
 doc = """
-One player decides how to divide a certain amount between himself and the other
-player.
-See: Kahneman, Daniel, Jack L. Knetsch, and Richard H. Thaler. "Fairness
-and the assumptions of economics." Journal of business (1986):
-S285-S300.
+This is a donation experiment taking monetary incentive (rebate) and image concern
+into account.
 """
 
 
 class C(BaseConstants):
-    NAME_IN_URL = 'dictator'
+    NAME_IN_URL = 'donation'
     PLAYERS_PER_GROUP = 2
-    NUM_ROUNDS = 1
-    # Initial amount allocated to the dictator
-    ENDOWMENT = cu(100)
+    NUM_ROUNDS = 9
 
 
 class Subsession(BaseSubsession):
