@@ -48,7 +48,14 @@ class WaitStart(WaitPage):
     after_all_players_arrive = set_endowment
 
 class Introduction(Page):
-    pass
+    @staticmethod
+    def vars_for_template(player: Player):
+        group = player.group
+        if player.role == C.HIGH_ROLE:
+            partner = group.get_player_by_role(C.LOW_ROLE)
+        else:
+            partner = group.get_player_by_role(C.HIGH_ROLE)
+        return dict(partner_coin = partner.endowment) 
 
 
 class Donate(Page):
