@@ -1,0 +1,26 @@
+{% block title %}
+  あなたの選択
+{% endblock %}
+
+{% block content %}
+    <div id="current-situation">
+      <p>
+        現在、あなたは {{ C.ENDOWMENT }} を持っています。
+        あなたはその一部を社会貢献事業に寄付できます。
+        以下に、社会貢献事業の内容を紹介します。
+      </p>
+    </div>
+    <div id="about-charity">
+      <p>
+        <b>（ここに財団の説明）</b>
+      </p>
+    </div>
+    <div id="form">
+      <p>
+        あなたは {{ C.ENDOWMENT }} のうち、いくらまでなら寄付をしても良いですか？
+      </p>
+    </div>
+
+    {% formfields %}
+    {% next_button %}
+{% endblock %}

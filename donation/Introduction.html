@@ -1,5 +1,15 @@
-{{ block title }}Introduction{{ endblock }}
-{{ block content }}
-    {{ include_sibling 'instructions.html' }}
-    {{ next_button }}
-{{ endblock }}
+{% load otree %}
+
+{% block title %}
+  これから実験を始めます
+{% endblock %}
+
+{% block content %}
+  <div id="confirm">
+    <p>
+      以下の「次へ」ボタンを押して、第1ラウンドの選択を決めてください。
+    </p>
+  </div>
+
+  {% next_button %}
+{% endblock %}

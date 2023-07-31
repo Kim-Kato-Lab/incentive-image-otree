@@ -1,15 +1,29 @@
-{{ block title }}Results{{ endblock }}
-{{ block content }}
-    <p>
+{% block title %}
+  結果
+{% endblock %}
 
-        {{ if player.id_in_group == 1 }}
-            You decided to keep <strong>{{ group.kept }}</strong> for yourself.
-        {{ else }}
-            Participant 1 decided to keep <strong>{{ group.kept }}</strong>, so
-            you got <strong>{{ offer }}</strong>.
-        {{ endif }}
-
-        {{ next_button }}
-    </p>
-    {{ include_sibling 'instructions.html' }}
-{{ endblock }}
+{% block content %}
+  <div id="result-table">
+    <table border="1" style="border-collapse: collapse;" width="500">
+      <tr>
+        <th></th>
+        <th>ラウンド</th>
+        <th>寄付前の保有ポイント</th>
+        <th>寄付額</th>
+      </tr>
+      <tr>
+        <td>あなた</td>
+        <td>{{ player.round_number }}</td>
+        <td>{{ C.ENDOWMENT }}</td>
+        <td>{{ player.donate }}</td>
+      </tr>
+      <tr>
+        <td>あなたと同じグループの人</td>
+        <td>{{ player.round_number }}</td>
+        <td>****</td>
+        <td>****</td>
+      </tr>
+    </table>
+  </div>
+  {% next_button %}
+{% endblock %}
