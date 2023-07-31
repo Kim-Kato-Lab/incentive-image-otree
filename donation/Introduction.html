@@ -1,13 +1,25 @@
 {% load otree %}
 
 {% block title %}
-  これから実験を始めます
+  ラウンド情報
 {% endblock %}
 
 {% block content %}
+  <div id="your-info">
+    <b>あなたについて</b>
+    <ul>
+      <li>あなたが初めに保有しているコインは<b>{{ player.endowment }}</b>です</li>
+    </ul>
+  </div>
+  <div id="partner-info">
+    <b>パートナーについて</b>
+    <ul>
+      <li>パートナーが初めに保有しているコインは<b></b>です</li>
+    </ul>
+  </div>
   <div id="confirm">
     <p>
-      以下の「次へ」ボタンを押して、第1ラウンドの選択を決めてください。
+      確認したら、以下の「次へ」ボタンを押してください。
     </p>
   </div>
 

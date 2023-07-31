@@ -5,7 +5,7 @@
 {% block content %}
     <div id="current-situation">
       <p>
-        現在、あなたは {{ C.ENDOWMENT }} を持っています。
+        現在、あなたは<b>{{ player.endowment }}</b>を持っています。
         あなたはその一部を社会貢献事業に寄付できます。
         以下に、社会貢献事業の内容を紹介します。
       </p>
@@ -17,7 +17,7 @@
     </div>
     <div id="form">
       <p>
-        あなたは {{ C.ENDOWMENT }} のうち、いくらまでなら寄付をしても良いですか？
+        あなたは<b>{{ player.endowment }}</b>のうち、いくらまでなら寄付をしても良いですか？
       </p>
     </div>
 

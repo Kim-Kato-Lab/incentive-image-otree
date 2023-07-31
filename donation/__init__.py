@@ -12,7 +12,8 @@ class C(BaseConstants):
     NAME_IN_URL = 'donation'
     PLAYERS_PER_GROUP = 2
     NUM_ROUNDS = 2
-    ENDOWMENT = cu(70)
+    HIGH_ROLE = 'High earner'
+    LOW_ROLE = 'Low earner'
 
 class Subsession(BaseSubsession):
     pass
@@ -23,21 +24,31 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    donate = models.CurrencyField(min=0, max=C.ENDOWMENT)
-
+    endowment = models.CurrencyField(initial=cu(0))
+    donate = models.CurrencyField(min=0)
 
 # FUNCTIONS
+def set_endowment(group: Group):
+    high = group.get_player_by_role(C.HIGH_ROLE)
+    low = group.get_player_by_role(C.LOW_ROLE)
+    high.endowment = 75
+    low.endowment = 25
+
+def donate_max(player: Player):
+    return player.endowment
+
 def set_payoffs(group: Group):
     players = group.get_players()
     for p in players:
-        p.payoff = C.ENDOWMENT - p.donate
+        p.payoff = p.endowment - p.donate
 
 
 # PAGES
+class WaitStart(WaitPage):
+    after_all_players_arrive = set_endowment
+
 class Introduction(Page):
-    @staticmethod
-    def is_displayed(player: Player):
-        return player.round_number == 1
+    pass
 
 
 class Donate(Page):
@@ -54,6 +65,7 @@ class Results(Page):
 
 
 page_sequence = [
+    WaitStart,
     Introduction,
     Donate,
     ResultsWaitPage,
