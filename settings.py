@@ -1,18 +1,5 @@
 from os import environ
 
-
-SESSION_CONFIGS = [
-    dict(
-        name='guess_two_thirds',
-        display_name="Guess 2/3 of the Average",
-        app_sequence=['guess_two_thirds', 'payment_info'],
-        num_demo_participants=3,
-    ),
-    dict(
-        name='survey', app_sequence=['survey', 'payment_info'], num_demo_participants=1
-    ),
-]
-
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs
 # in SESSION_CONFIGS, except those that explicitly override it.
 # the session config can be accessed from methods in your apps as self.session.config,
@@ -27,11 +14,23 @@ SESSION_FIELDS = []
 
 # ISO-639 code
 # for example: de, fr, ja, ko, zh-hans
-LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = 'ja'
 
 # e.g. EUR, GBP, CNY, JPY
-REAL_WORLD_CURRENCY_CODE = 'USD'
+REAL_WORLD_CURRENCY_CODE = 'JPY'
 USE_POINTS = True
+POINTS_CUSTOM_NAME = 'コイン'
+
+SESSION_CONFIGS = [
+    dict(
+        name='donation',
+        display_name="Donation experiment: Incentive and Image",
+        app_sequence=[
+            'donation'
+        ],
+        num_demo_participants=2,
+    )
+]
 
 ROOMS = [
     dict(
@@ -47,10 +46,8 @@ ADMIN_USERNAME = 'admin'
 ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
 
 DEMO_PAGE_INTRO_HTML = """
-Here are some oTree games.
+Economic Experiments developed by Hiroki Kato.
+Source code can be found at <a href='https://github.com/KatoPachi'>Github</a>
 """
 
-
-SECRET_KEY = '5321123674850'
-
-INSTALLED_APPS = ['otree']
+SECRET_KEY = environ.get('OTREE_SECRET_KEY')
