@@ -14,6 +14,7 @@ class C(BaseConstants):
     NUM_ROUNDS = 3
     HIGH_ROLE = 'High earner'
     LOW_ROLE = 'Low earner'
+    ENDOWMENT = [75, 25]
     REBATE = [
         [0.5, 0.15],
         [0.5, 0.25],
@@ -33,6 +34,7 @@ class Group(BaseGroup):
     list_row = models.IntegerField(initial=0)
     high_income_rebate = models.FloatField(initial=0)
     low_income_rebate = models.FloatField(initial=0)
+    reveal = models.BooleanField()
 
 
 class Player(BasePlayer):
@@ -41,6 +43,7 @@ class Player(BasePlayer):
     rebate = models.FloatField(initial=0)
     payoff_wo_rebate = models.IntegerField(initial=0)
     payoff_w_rebate = models.IntegerField(initial=0)
+    observable = models.BooleanField()
 
 # FUNCTIONS
 def creating_session(subsession: Subsession):
@@ -53,8 +56,11 @@ def creating_session(subsession: Subsession):
     
     subsession.set_group_matrix(new_mat)
 
+    for g in subsession.get_groups():
+        g.reveal = subsession.session.config['one_sided_information']
 
-def set_inc_rebate(group: Group):
+
+def set_role(group: Group):
     # rebate incentive
     rebate_list = list(range(len(C.REBATE)))
     now_round = group.subsession.round_number
@@ -75,8 +81,20 @@ def set_inc_rebate(group: Group):
     low = group.get_player_by_role(C.LOW_ROLE)
     high.rebate = group.high_income_rebate
     low.rebate = group.low_income_rebate
-    high.endowment = 75
-    low.endowment = 25
+    high.endowment = C.ENDOWMENT[0]
+    low.endowment = C.ENDOWMENT[1]
+
+    # set one-sided revealed information
+    if group.reveal:
+        num1 = group.get_player_by_id(1)
+        num2 = group.get_player_by_id(2)
+        if now_round == 1:
+            num1.observable = False
+            num2.observable = True
+        else:
+            num1.observable = num1.in_round(1).observable
+            num2.observable = num2.in_round(1).observable
+
 
 def donate_max(player: Player):
     return player.endowment
@@ -90,7 +108,7 @@ def set_payoffs(group: Group):
 
 # PAGES
 class WaitStart(WaitPage):
-    after_all_players_arrive = set_inc_rebate
+    after_all_players_arrive = set_role
 
 class Introduction(Page):
     @staticmethod
@@ -117,7 +135,17 @@ class ResultsWaitPage(WaitPage):
 
 
 class Results(Page):
-    pass
+    @staticmethod
+    def vars_for_template(player: Player):
+        group = player.group
+        if player.role == C.HIGH_ROLE:
+            partner = group.get_player_by_role(C.LOW_ROLE)
+        else:
+            partner = group.get_player_by_role(C.HIGH_ROLE)
+        return dict(
+            partner_coin = partner.endowment,
+            partner_donate = partner.donate
+        )
 
 page_sequence = [
     WaitStart,

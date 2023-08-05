@@ -3,27 +3,52 @@
 {% endblock %}
 
 {% block content %}
-  <div id="result-table">
-    <table border="1" style="border-collapse: collapse;" width="500">
-      <tr>
-        <th></th>
-        <th>ラウンド</th>
-        <th>寄付前の保有コイン</th>
-        <th>寄付額</th>
-      </tr>
-      <tr>
-        <td>あなた</td>
-        <td>{{ player.round_number }}</td>
-        <td>{{ player.endowment }}</td>
-        <td>{{ player.donate }}</td>
-      </tr>
-      <tr>
-        <td>あなたと同じグループのパートナー</td>
-        <td>{{ player.round_number }}</td>
-        <td>****</td>
-        <td>****</td>
-      </tr>
-    </table>
-  </div>
+  {% if player.observable %}
+    <div id="result-table-share">
+      <table border="1" style="border-collapse: collapse;" width="500">
+        <tr>
+          <th></th>
+          <th>ラウンド</th>
+          <th>寄付前の保有コイン</th>
+          <th>寄付額</th>
+        </tr>
+        <tr>
+          <td>あなた</td>
+          <td>{{ player.round_number }}</td>
+          <td>{{ player.endowment }}</td>
+          <td>{{ player.donate }}</td>
+        </tr>
+        <tr>
+          <td>あなたと同じグループのパートナー</td>
+          <td>{{ player.round_number }}</td>
+          <td>{{ partner_coin }}</td>
+          <td>{{ partner_donate }}</td>
+        </tr>
+      </table>
+    </div>
+  {% else %}
+    <div id="result-table-hide">
+      <table border="1" style="border-collapse: collapse;" width="500">
+        <tr>
+          <th></th>
+          <th>ラウンド</th>
+          <th>寄付前の保有コイン</th>
+          <th>寄付額</th>
+        </tr>
+        <tr>
+          <td>あなた</td>
+          <td>{{ player.round_number }}</td>
+          <td>{{ player.endowment }}</td>
+          <td>{{ player.donate }}</td>
+        </tr>
+        <tr>
+          <td>あなたと同じグループのパートナー</td>
+          <td>{{ player.round_number }}</td>
+          <td>{{ partner_coin }}</td>
+          <td>****</td>
+        </tr>
+      </table>
+    </div>
+  {% endif %}
   {% next_button %}
 {% endblock %}
