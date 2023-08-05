@@ -1,5 +1,5 @@
 from otree.api import *
-import random
+import random, string
 
 author = 'Hiroki Kato'
 doc = """
@@ -35,6 +35,7 @@ class Group(BaseGroup):
     high_income_rebate = models.FloatField(initial=0)
     low_income_rebate = models.FloatField(initial=0)
     reveal = models.BooleanField()
+    opt_in = models.BooleanField()
 
 
 class Player(BasePlayer):
@@ -44,6 +45,7 @@ class Player(BasePlayer):
     payoff_wo_rebate = models.IntegerField(initial=0)
     payoff_w_rebate = models.IntegerField(initial=0)
     observable = models.BooleanField()
+    receipt = models.StringField()
 
 # FUNCTIONS
 def creating_session(subsession: Subsession):
@@ -58,6 +60,7 @@ def creating_session(subsession: Subsession):
 
     for g in subsession.get_groups():
         g.reveal = subsession.session.config['one_sided_information']
+        g.opt_in = subsession.session.config['opt_in_rebate']
 
 
 def set_role(group: Group):
@@ -129,6 +132,25 @@ class Donate(Page):
     form_model = 'player'
     form_fields = ['donate']
 
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        if player.group.opt_in:
+            if player.donate > 0:
+                min_len = 5
+                max_len = 10
+                num_list = range(min_len, max_len + 1)
+                n = random.sample(num_list, 1)
+                receipt_id = ''.join(random.choices(string.ascii_lowercase + string.digits, k = n[0]))
+                player.receipt = receipt_id
+
+class Receipt(Page):
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.group.opt_in and player.donate > 0
+    
+    @staticmethod
+    def vars_for_template(player: Player):
+        return dict(rebate = int(player.rebate * 100))
 
 class ResultsWaitPage(WaitPage):
     after_all_players_arrive = set_payoffs
@@ -152,5 +174,6 @@ page_sequence = [
     Introduction,
     Donate,
     ResultsWaitPage,
-    Results
+    Results,
+    Receipt
 ]

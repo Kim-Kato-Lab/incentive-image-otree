@@ -1,0 +1,26 @@
+{% block title %}
+  受領証
+{% endblock %}
+
+{% block content %}
+  <div id="receipt-content">
+    <p>
+      あなたは慈善団体に{{ player.donate }}コインを寄付することを確認しました。
+      この後、あなたはこの寄付額の{{ rebate }}%の返金を受け取るチャンスがあります。
+      その際、下の受領証IDを入力していただきます。
+      入力が間違っていた場合、返金は受けられません。
+      返金を受けたい場合は必ず受領証IDを控えておいてください。
+    </p>
+  </div>
+  <div id="recipt-id">
+    <p>
+      <b>{{ player.receipt }}</b>
+    </p>
+  </div>
+  <div id="receipt-end-content">
+    <p>
+      確認しましたら、「次へ」のボタンを押してください。
+    </p>
+  </div>
+  {% next_button %}
+{% endblock %}

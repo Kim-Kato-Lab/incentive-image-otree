@@ -29,7 +29,8 @@ SESSION_CONFIGS = [
             'donation'
         ],
         num_demo_participants=4,
-        one_sided_information = True
+        one_sided_information = True,
+        opt_in_rebate = True
     )
 ]
 
