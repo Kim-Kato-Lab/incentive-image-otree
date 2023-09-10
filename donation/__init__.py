@@ -12,26 +12,28 @@ class C(BaseConstants):
     NAME_IN_URL = 'donation'
     PLAYERS_PER_GROUP = 2
     NUM_ROUNDS = 3
-    HIGH_ROLE = 'High earner'
-    LOW_ROLE = 'Low earner'
-    ENDOWMENT = [75, 25]
+    ENDOWMENT = [1500, 500]
     REBATE = [
-        [0.5, 0.15],
-        [0.5, 0.25],
-        [0.5, 0.5]#,
-        # [0.25, 0.5],
-        # [0.15, 0.5],
-        # [0.25, 0.1],
-        # [0.1, 0.25],
-        # [0.15, 0.15]
+        [0.6, 0.1],
+        [0.5, 0.1],
+        [0.4, 0.1],
+        [0.4, 0.2],
+        [0.3, 0.2],
+        [0.3, 0.3],
+        [0.2, 0.3],
+        [0.2, 0.4],
+        [0.1, 0.4],
+        [0.1, 0.5],
+        [0.1, 0.6]
     ]
+    RECEIPT_ID_LEN = [5, 10]
 
 class Subsession(BaseSubsession):
     pass
 
 
 class Group(BaseGroup):
-    list_row = models.IntegerField(initial=0)
+    rebate_list_idx = models.IntegerField(initial=0)
     high_income_rebate = models.FloatField(initial=0)
     low_income_rebate = models.FloatField(initial=0)
     reveal = models.BooleanField()
@@ -44,7 +46,7 @@ class Player(BasePlayer):
     rebate = models.FloatField(initial=0)
     payoff_wo_rebate = models.IntegerField(initial=0)
     payoff_w_rebate = models.IntegerField(initial=0)
-    observable = models.BooleanField()
+    observer = models.BooleanField()
     receipt = models.StringField()
 
 # FUNCTIONS
@@ -64,39 +66,43 @@ def creating_session(subsession: Subsession):
 
 
 def set_role(group: Group):
-    # rebate incentive
-    rebate_list = list(range(len(C.REBATE)))
+    # player
+    p1 = group.get_player_by_id(1)
+    p2 = group.get_player_by_id(2)
+
+    # Role: income
+    p1.endowment = C.ENDOWMENT[0] # High income
+    p2.endowment = C.ENDOWMENT[1] # Low income
+
+    # Role: incentive
+    idx_list = list(range(len(C.REBATE)))
     now_round = group.subsession.round_number
     if now_round == 1:
-        pickup = random.sample(rebate_list, 1)[0]
+        pickup = random.choice(idx_list)
     else:
         past_round = list(range(1, now_round))
-        done = [group.in_round(n).list_row for n in past_round]
+        done = [group.in_round(n).rebate_list_idx for n in past_round]
         for i in done:
-            rebate_list.pop(i)
-        pickup = random.sample(rebate_list, 1)[0]
-    group.list_row = pickup
+            idx_list.pop(i)
+        pickup = random.choice(idx_list)
+    group.rebate_list_idx = pickup
+
     group.high_income_rebate = C.REBATE[pickup][0]
     group.low_income_rebate = C.REBATE[pickup][1]
+    p1.rebate = group.high_income_rebate
+    p2.rebate = group.low_income_rebate
 
-    # income
-    high = group.get_player_by_role(C.HIGH_ROLE)
-    low = group.get_player_by_role(C.LOW_ROLE)
-    high.rebate = group.high_income_rebate
-    low.rebate = group.low_income_rebate
-    high.endowment = C.ENDOWMENT[0]
-    low.endowment = C.ENDOWMENT[1]
-
-    # set one-sided revealed information
-    if group.reveal:
-        num1 = group.get_player_by_id(1)
-        num2 = group.get_player_by_id(2)
-        if now_round == 1:
-            num1.observable = False
-            num2.observable = True
+    # Role: Observer or not (Fixed role)
+    if now_round == 1:
+        if group.reveal:
+            p1.observer = False
+            p2.observer = True
         else:
-            num1.observable = num1.in_round(1).observable
-            num2.observable = num2.in_round(1).observable
+            p1.observer = False
+            p2.observer = False
+    else:
+        p1.observer = p1.in_round(1).observer
+        p2.observer = p2.in_round(1).observer
 
 
 def donate_max(player: Player):
@@ -116,11 +122,7 @@ class WaitStart(WaitPage):
 class Introduction(Page):
     @staticmethod
     def vars_for_template(player: Player):
-        group = player.group
-        if player.role == C.HIGH_ROLE:
-            partner = group.get_player_by_role(C.LOW_ROLE)
-        else:
-            partner = group.get_player_by_role(C.HIGH_ROLE)
+        partner = player.get_others_in_group()[0]
         return dict(
             your_rebate = int(player.rebate * 100),
             partner_coin = partner.endowment,
@@ -136,11 +138,11 @@ class Donate(Page):
     def before_next_page(player: Player, timeout_happened):
         if player.group.opt_in:
             if player.donate > 0:
-                min_len = 5
-                max_len = 10
+                min_len = C.RECEIPT_ID_LEN[0]
+                max_len = C.RECEIPT_ID_LEN[1]
                 num_list = range(min_len, max_len + 1)
-                n = random.sample(num_list, 1)
-                receipt_id = ''.join(random.choices(string.ascii_lowercase + string.digits, k = n[0]))
+                n = random.choice(num_list)
+                receipt_id = ''.join(random.choices(string.ascii_lowercase + string.digits, k = n))
                 player.receipt = receipt_id
 
 class Receipt(Page):
@@ -159,11 +161,7 @@ class ResultsWaitPage(WaitPage):
 class Results(Page):
     @staticmethod
     def vars_for_template(player: Player):
-        group = player.group
-        if player.role == C.HIGH_ROLE:
-            partner = group.get_player_by_role(C.LOW_ROLE)
-        else:
-            partner = group.get_player_by_role(C.HIGH_ROLE)
+        partner = player.get_others_in_group()[0]
         return dict(
             partner_coin = partner.endowment,
             partner_donate = partner.donate
