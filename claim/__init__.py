@@ -37,6 +37,48 @@ class Player(BasePlayer):
     input9 = create_input_field('第9ラウンドの寄付')
     input10 = create_input_field('第10ラウンドの寄付')
     input11 = create_input_field('第11ラウンドの寄付')
+    correct1 = models.BooleanField(initial = False)
+    correct2 = models.BooleanField(initial = False)
+    correct3 = models.BooleanField(initial = False)
+    correct4 = models.BooleanField(initial = False)
+    correct5 = models.BooleanField(initial = False)
+    correct6 = models.BooleanField(initial = False)
+    correct7 = models.BooleanField(initial = False)
+    correct8 = models.BooleanField(initial = False)
+    correct9 = models.BooleanField(initial = False)
+    correct10 = models.BooleanField(initial = False)
+    correct11 = models.BooleanField(initial = False)
+
+def set_payoff(group: Group):
+    for player in group.get_players():
+        # calculate payoff
+        participant = player.participant
+        endowment = participant.endowment
+        donate = participant.donate
+        rebate = participant.rebate
+
+        payoff_wo_rebate = []
+        payoff_w_rebate = []
+        for i in range(len(endowment)):
+            hold = endowment[i] - donate[i]
+            payback = int(round(rebate[i] * donate[i], 0))
+            payoff_wo_rebate.append(hold)
+            payoff_w_rebate.append(hold + payback)
+        
+        # set payoff_list
+        if player.session.config['opt_in_rebate']:
+            payoff_list_input = []
+            for i in range(len(endowment)):
+                if getattr(player, 'correct' + str(i + 1)):
+                    payoff_list_input.append(payoff_w_rebate[i])
+                else:
+                    payoff_list_input.append(payoff_wo_rebate[i])
+            
+            participant.payoff_list = payoff_list_input
+        else:
+            participant.payoff_list = payoff_w_rebate
+        
+        print(participant.payoff_list)
 
 # PAGES
 class Introduction(Page):
@@ -63,9 +105,26 @@ class Claim(Page):
         
         return form
     
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        # check correct ID
+        participant = player.participant
+        receipt = participant.receipt
+
+        for i in range(len(receipt)):
+            input_field = 'input' + str(i + 1)
+            input_id = getattr(player, input_field)
+            correct_id = receipt[i]
+            if input_id == correct_id:
+                correct_field = 'correct' + str(i + 1)
+                setattr(player, correct_field, True)
+
+class Wait(WaitPage):
+    after_all_players_arrive = set_payoff
 
 
 page_sequence = [
     Introduction,
-    Claim
+    Claim,
+    Wait
 ]

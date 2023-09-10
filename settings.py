@@ -13,7 +13,8 @@ PARTICIPANT_FIELDS = [
     'endowment',
     'rebate',
     'donate',
-    'receipt'
+    'receipt',
+    'payoff_list'
 ]
 SESSION_FIELDS = []
 
