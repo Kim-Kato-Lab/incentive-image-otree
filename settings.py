@@ -31,7 +31,8 @@ SESSION_CONFIGS = [
         name='donation',
         display_name="Donation experiment: Incentive and Image",
         app_sequence=[
-            'donation'
+            'donation',
+            'claim'
         ],
         num_demo_participants=4,
         one_sided_information = True,
