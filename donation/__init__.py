@@ -42,10 +42,8 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     endowment = models.IntegerField(initial=0)
-    donate = models.IntegerField(min=0)
     rebate = models.FloatField(initial=0)
-    payoff_wo_rebate = models.IntegerField(initial=0)
-    payoff_w_rebate = models.IntegerField(initial=0)
+    donate = models.IntegerField(min=0)
     observer = models.BooleanField()
     receipt = models.StringField()
 
@@ -108,13 +106,6 @@ def set_role(group: Group):
 def donate_max(player: Player):
     return player.endowment
 
-def set_payoffs(group: Group):
-    players = group.get_players()
-    for p in players:
-        p.payoff_wo_rebate = p.endowment - p.donate
-        p.payoff_w_rebate = p.payoff_wo_rebate + int(round(p.rebate * p.donate, 0))
-
-
 # PAGES
 class WaitStart(WaitPage):
     after_all_players_arrive = set_role
@@ -136,6 +127,8 @@ class Donate(Page):
 
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
+        # issue receipt id
+        receipt_id = ''
         if player.group.opt_in:
             if player.donate > 0:
                 min_len = C.RECEIPT_ID_LEN[0]
@@ -143,20 +136,24 @@ class Donate(Page):
                 num_list = range(min_len, max_len + 1)
                 n = random.choice(num_list)
                 receipt_id = ''.join(random.choices(string.ascii_lowercase + string.digits, k = n))
-                player.receipt = receipt_id
-
-class Receipt(Page):
-    @staticmethod
-    def is_displayed(player: Player):
-        return player.group.opt_in and player.donate > 0
-    
-    @staticmethod
-    def vars_for_template(player: Player):
-        return dict(rebate = int(player.rebate * 100))
+                
+        player.receipt = receipt_id
+        
+        # set participant field
+        participant = player.participant
+        if player.round_number == 1:
+            participant.endowment = [player.endowment]
+            participant.rebate = [player.rebate]
+            participant.donate = [player.donate]
+            participant.receipt = [player.receipt]
+        else:
+            participant.endowment.append(player.endowment)
+            participant.rebate.append(player.rebate)
+            participant.donate.append(player.donate)
+            participant.receipt.append(player.receipt)
 
 class ResultsWaitPage(WaitPage):
-    after_all_players_arrive = set_payoffs
-
+    pass
 
 class Results(Page):
     @staticmethod
@@ -166,6 +163,15 @@ class Results(Page):
             partner_coin = partner.endowment,
             partner_donate = partner.donate
         )
+
+class Receipt(Page):
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.group.opt_in and player.donate > 0
+    
+    @staticmethod
+    def vars_for_template(player: Player):
+        return dict(rebate = int(player.rebate * 100))
 
 page_sequence = [
     WaitStart,
