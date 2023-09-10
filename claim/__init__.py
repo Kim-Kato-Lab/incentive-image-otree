@@ -1,4 +1,5 @@
 from otree.api import *
+import random
 
 author = 'Hiroki Kato'
 doc = """
@@ -78,7 +79,9 @@ def set_payoff(group: Group):
         else:
             participant.payoff_list = payoff_w_rebate
         
-        print(participant.payoff_list)
+        # calculate realized payoff
+        pickup = random.sample(participant.payoff_list, 2)
+        participant.payoff = sum(pickup)
 
 # PAGES
 class Introduction(Page):

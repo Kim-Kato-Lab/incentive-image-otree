@@ -1,0 +1,55 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}
+    実験のご協力ありがとうございます
+{% endblock %}
+
+{% block content %}
+  <div id="payment-information">
+    <p>
+      これで実験は終了となります。
+    </p>
+    {{ if participation_fee > 0 }}
+    <p>
+      報酬は<b>参加費</b>と<b>成果報酬</b>の合計です。
+    </p>
+    <ul>
+      <li>
+        参加費：{{ participation_fee }}
+      </li>
+      <li>
+        成果報酬：ランダムに選ばれた2つのラウンドで獲得したあなたのコインを合計し、それを成果報酬とします。
+        1コイン＝1円で成果報酬が円に換算されます。
+      </li>
+    </ul>
+    {{ else }}
+    <p>
+      報酬はランダムに選ばれた2つのラウンドで獲得したあなたのコインの合計です。
+      1コイン＝1円で報酬が円に換算されます。
+    </p>
+    {{ endif }}
+  </div>
+  <br>
+  <div id="realized-payment">
+    <p>
+      あなたの報酬は以下の通りです。
+    </p>
+    {{ if participation_fee > 0 }}
+    <ul>
+      <li>参加費：{{ participation_fee }}</li>
+      <li>成果報酬：{{ realized_payoff }}（{{ p4p }}）</li>
+      <li>最終的な実験報酬：<b>{{ get_money }}</b></li>
+    </ul>
+    {{ else }}
+    <ul>
+      <li>最終的な実験報酬：<b>{{ get_money }}</b></li>
+    </ul>
+    {{ endif }}
+  </div>
+  <br>
+  <div id="please-wait">
+    このあと、お一人ずつ呼んで、実験報酬をお支払いします。
+    今しばらくお待ちください。
+  </div>
+{% endblock %}
