@@ -34,6 +34,7 @@ SESSION_CONFIGS = [
         name='donation',
         display_name="Donation experiment: Incentive and Image",
         app_sequence=[
+            'quiz',
             'donation',
             'claim',
             'payment_info'
