@@ -148,7 +148,7 @@ class Answer(Page):
     
 class Finish(Page):
     @staticmethod
-    def is_display(player: Player):
+    def is_displayed(player: Player):
         checker = [
             player.correct_q1,
             player.correct_q2,

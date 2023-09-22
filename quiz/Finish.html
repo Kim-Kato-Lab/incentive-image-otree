@@ -1,0 +1,19 @@
+{{ load otree }}
+{{ block title }}
+確認問題は終了です
+{{ endblock }}
+
+{{ block content }}
+
+<div id="finish">
+  <p>
+    すべての質問に対して正解したので、これで確認問題は終了です。
+  </p>
+  <p>
+    全員の確認問題が終了したら、実際の実験に入ります。
+    「次へ」ボタンを押して、しばらくお待ちください。
+  </p>
+  {{ next_button }}
+</div>
+
+{{ endblock }}
