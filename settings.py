@@ -16,7 +16,8 @@ PARTICIPANT_FIELDS = [
     'rebate',
     'donate',
     'receipt',
-    'payoff_list'
+    'payoff_list',
+    'partial_report'
 ]
 SESSION_FIELDS = []
 
@@ -37,7 +38,8 @@ SESSION_CONFIGS = [
             'quiz',
             'donation',
             'claim',
-            'payment_info'
+            'survey',
+            'payment_info',
         ],
         num_demo_participants=4,
         reveal_information = True,

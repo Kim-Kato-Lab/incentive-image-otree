@@ -67,7 +67,7 @@ def set_payoff(group: Group):
             payoff_w_rebate.append(hold + payback)
         
         # set payoff_list
-        if player.session.config['opt_in_rebate']:
+        if player.session.config['opt_in']:
             payoff_list_input = []
             for i in range(len(endowment)):
                 if getattr(player, 'correct' + str(i + 1)):
@@ -87,14 +87,14 @@ def set_payoff(group: Group):
 class Introduction(Page):
     @staticmethod
     def vars_for_template(player: Player):
-        return dict(opt_in = player.session.config['opt_in_rebate'])
+        return dict(opt_in = player.session.config['opt_in'])
 
 class Claim(Page):
     form_model = 'player'
 
     @staticmethod
     def is_displayed(player: Player):
-        return player.session.config['opt_in_rebate']
+        return player.session.config['opt_in']
 
     @staticmethod
     def get_form_fields(player: Player):

@@ -11,7 +11,7 @@ into account.
 class C(BaseConstants):
     NAME_IN_URL = 'donation'
     PLAYERS_PER_GROUP = 2
-    NUM_ROUNDS = 3
+    NUM_ROUNDS = 2
     ENDOWMENT = [1500, 500]
     REBATE = [
         [0.6, 0.1],
@@ -110,7 +110,14 @@ def donate_max(player: Player):
     return player.endowment
 
 # PAGES
-class WaitStart(WaitPage):
+class WaitStartApp(WaitPage):
+    wait_for_all_groups = True
+
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.round_number == 1
+
+class WaitStartRound(WaitPage):
     after_all_players_arrive = set_role
 
 class Introduction(Page):
@@ -176,11 +183,21 @@ class Receipt(Page):
     def vars_for_template(player: Player):
         return dict(rebate = int(player.rebate * 100))
 
+class ShuffleWaitPage(WaitPage):
+    body_text = """
+    他のグループのゲームの終了を待っています。
+    しばらくお待ちください。
+    """
+
+    wait_for_all_groups = True
+
 page_sequence = [
-    WaitStart,
+    WaitStartApp,
+    WaitStartRound,
     Introduction,
     Donate,
     ResultsWaitPage,
     Results,
-    Receipt
+    Receipt,
+    ShuffleWaitPage
 ]
