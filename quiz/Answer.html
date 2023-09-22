@@ -83,14 +83,14 @@
       あなたは寄付によっていくらの返金をもらえますか？ 整数（半角数字）で解答してください。
       <ul>
         <li>あなたの解答：{{ player.q4 }}コイン</li>
-        <li>正解：{{ low_income_rebate_amount }}</li>
+        <li>正解：{{ low_income_rebate_amount }}コイン</li>
       </ul>
     </li>
     <li>
       返金を受けた後、最終的にあなたの手元に残るコインはいくらですか？整数（半角数字）で解答してください。
       <ul>
-        <li>あなたの解答：{{ player.q5 }} </li>
-        <li>正解： {{ low_income_payoff }}</li>
+        <li>あなたの解答：{{ player.q5 }}コイン</li>
+        <li>正解： {{ low_income_payoff }}コイン</li>
       </ul>
     </li>
     <li>
@@ -98,7 +98,7 @@
       <ul>
         <li>
           あなたの解答：
-          {{ if player.q3 }}
+          {{ if player.q6 }}
             はい
           {{ else }}
             いいえ
