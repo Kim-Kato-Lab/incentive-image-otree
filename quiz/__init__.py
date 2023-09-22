@@ -5,7 +5,7 @@ class C(BaseConstants):
     NAME_IN_URL = 'quiz'
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 10
-    ENDOWMENT = [200, 50]
+    ENDOWMENT = [300, 50]
     DONATE = [100, 10]
     REBATE = [0.5, 0.1]
 
@@ -105,34 +105,45 @@ class Quiz(Page):
     
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
-        low_income_rebate_amount = int(C.DONATE[1] * C.REBATE[1])
-        low_income_payoff = int(C.ENDOWMENT[1] - C.DONATE[1] + low_income_rebate_amount)
-        low_income_observe = False
-
         high_income_rebate_amount = int(C.DONATE[0] * C.REBATE[0])
         high_income_payoff = int(C.ENDOWMENT[0] - C.DONATE[0] + high_income_rebate_amount)
-        high_income_observe = player.reveal
+        high_income_observe = False
+
+        low_income_rebate_amount = int(C.DONATE[1] * C.REBATE[1])
+        low_income_payoff = int(C.ENDOWMENT[1] - C.DONATE[1] + low_income_rebate_amount)
+        low_income_observe = player.reveal
 
         player.correct_q1 = player.q1 == high_income_rebate_amount
         player.correct_q2 = player.q2 == high_income_payoff
-        player.correct_q3 = player.q3 == high_income_observe
+        player.correct_q3 = player.q3 == low_income_observe
         player.correct_q4 = player.q4 == low_income_rebate_amount
         player.correct_q5 = player.q5 == low_income_payoff
-        player.correct_q6 = player.q6 == low_income_observe
+        player.correct_q6 = player.q6 == high_income_observe
 
 class Answer(Page):
     @staticmethod
     def vars_for_template(player: Player):
-        low_income_rebate_amount = int(C.DONATE[1] * C.REBATE[1])
+        high_income_remain = int(C.ENDOWMENT[0] - C.DONATE[0])
         high_income_rebate_amount = int(C.DONATE[0] * C.REBATE[0])
 
+        low_income_remain = int(C.ENDOWMENT[1] - C.DONATE[1])
+        low_income_rebate_amount = int(C.DONATE[1] * C.REBATE[1])
+
         return dict(
-            low_income_rebate_amount = low_income_rebate_amount,
-            low_income_payoff = int(C.ENDOWMENT[1] - C.DONATE[1]) + low_income_rebate_amount,
-            low_income_observe = 'いいえ',
+            high_income = C.ENDOWMENT[0],
+            high_income_rebate = int(C.REBATE[0] * 100),
+            high_income_donate = C.DONATE[0],
             high_income_rebate_amount = high_income_rebate_amount,
-            high_income_payoff = int(C.ENDOWMENT[0] - C.DONATE[0]) + high_income_rebate_amount,
-            high_income_observe = 'はい' if player.reveal else 'いいえ'
+            high_income_remain = high_income_remain,
+            high_income_payoff = high_income_remain + high_income_rebate_amount,
+            high_income_observe = 'いいえ',
+            low_income = C.ENDOWMENT[1],
+            low_income_rebate = int(C.REBATE[1] * 100),
+            low_income_donate = C.DONATE[1],
+            low_income_rebate_amount = low_income_rebate_amount,
+            low_income_remain = low_income_remain,
+            low_income_payoff = low_income_remain + low_income_rebate_amount,
+            low_income_observe = 'はい' if player.reveal else 'いいえ'
         )
     
 class Finish(Page):

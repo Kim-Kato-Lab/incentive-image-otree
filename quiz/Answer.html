@@ -1,0 +1,144 @@
+{{ load otree }}
+{{ block title }}
+解答解説
+{{ endblock }}
+
+{{ block content }}
+
+<div id="situation">
+  <p>AさんとBさんはグループを組み、同じ慈善団体に寄付をする機会があります。</p>
+  <div id="A-info">
+    <b>Aさんについて</b>
+    <ul>
+      <li>Aさんは<b>{{ high_income }}コイン</b>を保有しています</li>
+      <li>Aさんは、寄付額の<b>{{ high_income_rebate }}％</b>を実験者が負担して、その分だけ返金を受けられます</li>
+      <li>Aさんはパートナーがいくら寄付したかを知ることはできません。</li>
+    </ul>
+  </div>
+  <div id="B-info">
+    <b>Bさんについて</b>
+    <ul>
+      <li>Bさんは<b>{{ low_income }}コイン</b>を保有しています</li>
+      <li>Bさんは、寄付額の<b>{{ low_income_rebate }}％</b>を実験者が負担して、その分だけ返金を受けられます</li>
+      {{ if player.reveal }}
+      <li>Bさんはパートナーがいくら寄付したかを知ることができます</li>
+      {{ else }}
+      <li>Bさんはパートナーがいくら寄付したかを知ることはできません</li>
+      {{ endif }}
+    </ul>
+  </div>
+  <p>以下の設問について解答してください。</p>
+</div>
+
+<div id="A-quiz">
+  <p>
+    <b>
+      質問1：あなたはAさんであるとします。
+      そして、あなたは{{ high_income_donate }}コインを寄付をしたとします。
+    </b>
+  </p>
+  <ul>
+    <li>
+      あなたは寄付によっていくらの返金をもらえますか？ 整数（半角数字）で解答してください。
+      <ul>
+        <li>あなたの解答：{{ player.q1 }}コイン</li>
+        <li>正解：{{ high_income_rebate_amount }}コイン</li>
+      </ul>
+    </li>
+    <li>
+      返金を受けた後、最終的にあなたの手元に残るコインはいくらですか？整数（半角数字）で解答してください。
+      <ul>
+        <li>あなたの解答：{{ player.q2 }}コイン</li>
+        <li>正解： {{ high_income_payoff }}コイン</li>
+      </ul>
+    </li>
+    <li>
+      あなたのパートナーであるBさんは、あなたがいくら寄付したことを知っていますか？
+      <ul>
+        <li>
+          あなたの解答：
+          {{ if player.q3 }}
+            はい
+          {{ else }}
+            いいえ
+          {{ endif }}
+        </li>
+        <li>正解：{{ low_income_observe }}</li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<br>
+
+<div id="B-quiz">
+  <p>
+    <b>
+      質問2：あなたはBさんであるとします。
+      そして、あなたは{{ low_income_donate }}コインを寄付をしたとします。
+    </b>
+  </p>
+  <ul>
+    <li>
+      あなたは寄付によっていくらの返金をもらえますか？ 整数（半角数字）で解答してください。
+      <ul>
+        <li>あなたの解答：{{ player.q4 }}コイン</li>
+        <li>正解：{{ low_income_rebate_amount }}</li>
+      </ul>
+    </li>
+    <li>
+      返金を受けた後、最終的にあなたの手元に残るコインはいくらですか？整数（半角数字）で解答してください。
+      <ul>
+        <li>あなたの解答：{{ player.q5 }} </li>
+        <li>正解： {{ low_income_payoff }}</li>
+      </ul>
+    </li>
+    <li>
+      あなたのパートナーであるAさんは、あなたがいくら寄付したことを知っていますか？
+      <ul>
+        <li>
+          あなたの解答：
+          {{ if player.q3 }}
+            はい
+          {{ else }}
+            いいえ
+          {{ endif }}
+        </li>
+        <li>正解：{{ high_income_observe }}</li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<div id="comment">
+  <p>各質問の3問目は状況設定に記載しているので、確認してください。</p>
+  <p>
+    Aさんの行動について：
+    Aさんは{{ high_income_donate }}コインを寄付しているので、
+    その{{ high_income_rebate }}%である{{ high_income_rebate_amount }}コインの返金をもらえます。
+    最終的に手元に残るコインは
+    <b>寄付した直後に残っているコイン</b>と<b>寄付による返金されたコイン</b>の合計です。
+    寄付した直後に残っているコインは{{ high_income_remain }}コインです。
+    したがって、Aさんが最終的に手にするコインは{{ high_income_payoff }}コインです。
+    また、Aさんの慈善団体への寄付額は{{ high_income_donate }}コインであり、
+    返金によって変わらないことに注意してください。
+  </p>
+  <p>
+    Bさんの行動について：
+    Bさんは{{ low_income_donate }}コインを寄付しているので、
+    その{{ low_income_rebate }}%である{{ low_income_rebate_amount }}コインの返金をもらえます。
+    最終的に手元に残るコインは
+    <b>寄付した直後に残っているコイン</b>と<b>寄付による返金されたコイン</b>の合計です。
+    寄付した直後に残っているコインは{{ low_income_remain }}コインです。
+    したがって、Bさんが最終的に手にするコインは{{ low_income_payoff }}コインです。
+    また、Bさんの慈善団体への寄付額は{{ low_income_donate }}コインであり、
+    返金によって変わらないことに注意してください。
+  </p>
+</div>
+
+<div id="next-button">
+  <p>確認出来たら、「次へ」のボタンを押してください。</p>
+  {{ next_button }}
+</div>
+
+{{ endblock }}
