@@ -97,8 +97,8 @@ class Quiz(Page):
         return dict(
             high_income = C.ENDOWMENT[0],
             low_income = C.ENDOWMENT[1],
-            high_income_rebate = C.REBATE[0] * 100,
-            low_income_rebate = C.REBATE[1] * 100,
+            high_income_rebate = int(C.REBATE[0] * 100),
+            low_income_rebate = int(C.REBATE[1] * 100),
             high_income_donate = C.DONATE[0],
             low_income_donate = C.DONATE[1]
         )

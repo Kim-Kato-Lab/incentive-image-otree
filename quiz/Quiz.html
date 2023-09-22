@@ -1,0 +1,65 @@
+{{ load otree }}
+{{ block title }}
+問題
+{{ endblock }}
+
+{{ block content }}
+
+<div id="situation">
+  <p>AさんとBさんはグループを組み、同じ慈善団体に寄付をする機会があります。</p>
+  <div id="A-info">
+    <b>Aさんについて</b>
+    <ul>
+      <li>Aさんは<b>{{ high_income }}コイン</b>を保有しています</li>
+      <li>Aさんは、寄付額の<b>{{ high_income_rebate }}％</b>を実験者が負担して、その分だけ返金を受けられます</li>
+      <li>Aさんはパートナーがいくら寄付したかを知ることはできません。</li>
+    </ul>
+  </div>
+  <div id="B-info">
+    <b>Bさんについて</b>
+    <ul>
+      <li>Bさんは<b>{{ low_income }}コイン</b>を保有しています</li>
+      <li>Bさんは、寄付額の<b>{{ low_income_rebate }}％</b>を実験者が負担して、その分だけ返金を受けられます</li>
+      {{ if player.reveal }}
+      <li>Bさんはパートナーがいくら寄付したかを知ることができます</li>
+      {{ else }}
+      <li>Bさんはパートナーがいくら寄付したかを知ることはできません</li>
+      {{ endif }}
+    </ul>
+  </div>
+  <p>以下の設問について解答してください。</p>
+</div>
+
+<div id="A-quiz">
+  <p>
+    <b>
+      質問1：あなたはAさんであるとします。
+      そして、あなたは{{ high_income_donate }}コインを寄付をしたとします。
+    </b>
+  </p>
+  <ul>
+    <li>{{ formfield 'q1' }}</li>
+    <li>{{ formfield 'q2' }}</li>
+    <li>{{ formfield 'q3' }}</li>
+  </ul>
+</div>
+
+<br>
+
+<div id="B-quiz">
+  <p>
+    <b>
+      質問2：あなたはBさんであるとします。
+      そして、あなたは{{ low_income_donate }}コインを寄付をしたとします。
+    </b>
+  </p>
+  <ul>
+    <li>{{ formfield 'q4' }}</li>
+    <li>{{ formfield 'q5' }}</li>
+    <li>{{ formfield 'q6' }}</li>
+  </ul>
+</div>
+
+{{ next_button }}
+
+{{ endblock }}
