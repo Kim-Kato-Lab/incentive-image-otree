@@ -1,0 +1,8 @@
+{
+  "Template tag": {
+    "scope": "html",
+    "prefix": "tag",
+    "body": "{{ $1 }}",
+    "description": "Create a template tag"
+  }
+}
