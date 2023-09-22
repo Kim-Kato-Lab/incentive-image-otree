@@ -59,8 +59,8 @@ def creating_session(subsession: Subsession):
     subsession.set_group_matrix(new_mat)
 
     for g in subsession.get_groups():
-        g.reveal = subsession.session.config['one_sided_information']
-        g.opt_in = subsession.session.config['opt_in_rebate']
+        g.reveal = subsession.session.config['reveal_information']
+        g.opt_in = subsession.session.config['opt_in']
 
 
 def set_role(group: Group):

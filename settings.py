@@ -39,8 +39,8 @@ SESSION_CONFIGS = [
             'payment_info'
         ],
         num_demo_participants=4,
-        one_sided_information = True,
-        opt_in_rebate = True
+        reveal_information = True,
+        opt_in = True
     )
 ]
 
