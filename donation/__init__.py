@@ -49,14 +49,7 @@ class Player(BasePlayer):
 
 # FUNCTIONS
 def creating_session(subsession: Subsession):
-    mat = subsession.get_group_matrix()
-    new_mat = []
-
-    for row in mat:
-        l = random.sample(row, len(row))
-        new_mat.append(l)
-    
-    subsession.set_group_matrix(new_mat)
+    subsession.group_randomly(fixed_id_in_group=True)
 
     for g in subsession.get_groups():
         g.reveal = subsession.session.config['reveal_information']
@@ -69,8 +62,13 @@ def set_role(group: Group):
     p2 = group.get_player_by_id(2)
 
     # Role: income
-    p1.endowment = C.ENDOWMENT[0] # High income
-    p2.endowment = C.ENDOWMENT[1] # Low income
+    number = random.random()
+    if number < 0.5:
+        p1.endowment = C.ENDOWMENT[0] # High income
+        p2.endowment = C.ENDOWMENT[1] # Low income
+    else:
+        p1.endowment = C.ENDOWMENT[1] # Low income
+        p2.endowment = C.ENDOWMENT[0] # High income
 
     # Role: incentive
     idx_list = list(range(len(C.REBATE)))
@@ -87,14 +85,19 @@ def set_role(group: Group):
 
     group.high_income_rebate = C.REBATE[pickup][0]
     group.low_income_rebate = C.REBATE[pickup][1]
-    p1.rebate = group.high_income_rebate
-    p2.rebate = group.low_income_rebate
+
+    if number < 0.5:
+        p1.rebate = group.high_income_rebate
+        p2.rebate = group.low_income_rebate
+    else:
+        p1.rebate = group.low_income_rebate
+        p2.rebate = group.high_income_rebate
 
     # Role: Observer or not (Fixed role)
     if now_round == 1:
         if group.reveal:
-            p1.observer = False
-            p2.observer = True
+            p1.observer = True
+            p2.observer = False
         else:
             p1.observer = False
             p2.observer = False
