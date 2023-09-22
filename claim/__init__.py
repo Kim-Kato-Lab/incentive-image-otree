@@ -114,6 +114,8 @@ class Claim(Page):
         participant = player.participant
         receipt = participant.receipt
 
+        partial_report = False
+
         for i in range(len(receipt)):
             input_field = 'input' + str(i + 1)
             input_id = getattr(player, input_field)
@@ -121,6 +123,12 @@ class Claim(Page):
             if input_id == correct_id:
                 correct_field = 'correct' + str(i + 1)
                 setattr(player, correct_field, True)
+            
+            if not partial_report:
+                if input_id == '' and correct_id != '':
+                    partial_report = True
+        
+        participant.partial_report = partial_report
 
 class Wait(WaitPage):
     after_all_players_arrive = set_payoff

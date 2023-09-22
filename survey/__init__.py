@@ -321,6 +321,10 @@ class PartialReport(Page):
     form_model = 'player'
     form_fields = ['reason_partial_report']
 
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.participant.partial_report
+
 page_sequence = [
     Demographics,
     Economist,
