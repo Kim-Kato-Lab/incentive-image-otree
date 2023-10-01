@@ -152,7 +152,7 @@ class Donate(Page):
                 max_len = C.RECEIPT_ID_LEN[1]
                 num_list = range(min_len, max_len + 1)
                 n = random.choice(num_list)
-                receipt_id = ''.join(random.choices(string.ascii_lowercase + string.digits, k = n))
+                receipt_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k = n))
                 
         player.receipt = receipt_id
         
@@ -184,7 +184,11 @@ class Results(Page):
     def vars_for_template(player: Player):
         partner = player.get_others_in_group()[0]
         return dict(
+            opt_in = player.group.opt_in,
+            your_rebate = int(player.rebate * 100),
+            your_rebate_amount = int(round(player.rebate * player.donate)),
             partner_coin = partner.endowment,
+            partner_rebate = int(partner.rebate * 100),
             partner_donate = partner.donate
         )
 

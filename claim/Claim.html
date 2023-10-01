@@ -1,8 +1,23 @@
-{% block title %}
+{{ block title }}
   返金申請フォーム
-{% endblock %}
+{{ endblock }}
 
-{% block content %}
-    {% formfields %}
-    {% next_button %}
-{% endblock %}
+{{ block content }}
+  <div id="note">
+    <b>注意事項</b>
+    <ul>
+      <li>大文字のローマ字を入力する場合は、「shift」キーを押しながらローマ字を入力してください</li>
+      <li>受領書IDの前後や途中にスペースを入れると、間違った入力となり、返金が受けられないので注意してください</li>
+      <li>すべてのラウンドで寄付しなかった場合、入力フォームが表示されません</li>
+    </ul>
+  </div>
+
+  {{ formfields }}
+  
+  <div id="next-button">
+    <p>
+      入力・確認が終わりましたら、「次へ」のボタンを押してください。
+    </p>
+    {{ next_button }}
+  </div>
+{{ endblock }}

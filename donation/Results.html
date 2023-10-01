@@ -9,52 +9,53 @@
     <div class="progress-bar bg-success" role="progressbar" aria-label="Progress" aria-valuemin="0" id="progressbar"></div>
   </div>
   <br>
-  {% if player.observer %}
-    <div id="result-table-share">
-      <table border="1" style="border-collapse: collapse;" width="500">
-        <tr>
-          <th></th>
-          <th>ラウンド</th>
-          <th>寄付前の保有コイン</th>
-          <th>寄付額</th>
-        </tr>
-        <tr>
+  <div id="result-table-share">
+    <table class="table table-sm">
+      <caption>
+        {{ if player.observer }}
+          <b>パートナーはあなたの寄付額を確認できません</b>
+        {{ else }}
+          <b>パートナーはあなたの寄付額を確認できます</b>
+        {{ endif }}        
+      </caption>
+      <tr>
+        <th></th>
+        <th>寄付前の保有コイン</th>
+        <th>寄付に対する返金率</th>
+        <th>寄付額</th>
+      </tr>
+      <tbody class="table-group-divider">
+        <tr class="table-primary">
           <td>あなた</td>
-          <td>{{ player.round_number }}</td>
           <td>{{ player.endowment }}</td>
+          <td>{{ your_rebate }}%</td>
           <td>{{ player.donate }}</td>
         </tr>
-        <tr>
+        <tr class="table-secondary">
           <td>あなたと同じグループのパートナー</td>
-          <td>{{ player.round_number }}</td>
           <td>{{ partner_coin }}</td>
-          <td>{{ partner_donate }}</td>
+          <td>{{ partner_rebate }}%</td>
+          <td>
+            {{ if player.observer }}
+              {{ partner_donate }}
+            {{ else }}
+              ***
+            {{ endif }}
+          </td>
         </tr>
-      </table>
-    </div>
-  {% else %}
-    <div id="result-table-hide">
-      <table border="1" style="border-collapse: collapse;" width="500">
-        <tr>
-          <th></th>
-          <th>ラウンド</th>
-          <th>寄付前の保有コイン</th>
-          <th>寄付額</th>
-        </tr>
-        <tr>
-          <td>あなた</td>
-          <td>{{ player.round_number }}</td>
-          <td>{{ player.endowment }}</td>
-          <td>{{ player.donate }}</td>
-        </tr>
-        <tr>
-          <td>あなたと同じグループのパートナー</td>
-          <td>****</td>
-          <td>****</td>
-          <td>****</td>
-        </tr>
-      </table>
-    </div>
-  {% endif %}
+      </tbody>
+    </table>
+  </div>
+  <br>
+  <div id="about-rebate">
+    <p><b>返金について（パートナーは以下の文章の内容を確認できません）</b></p>
+    <ul>
+      <li>あなたの寄付に対して返金される額は<b>{{ your_rebate_amount }}コイン</b>です</li>
+      {{ if opt_in }}
+      <li><b>返金を受けたい場合は、次のページで表示される受領書IDが必要となりますので、メモをしておいてください</b></li>
+      {{ endif }}
+      <li>我々が返金額と同額を負担するので、実際に寄付される額は{{ player.donate }}コインのままです</li>
+    </ul>
+  </div>
   {% next_button %}
 {% endblock %}
