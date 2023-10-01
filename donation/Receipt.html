@@ -1,8 +1,14 @@
+{{ extends 'global/Experiment.html' }}
+
 {% block title %}
   受領証
 {% endblock %}
 
 {% block content %}
+  <div class="progress" style="height: 20px">
+    <div class="progress-bar bg-success" role="progressbar" aria-label="Progress" aria-valuemin="0" id="progressbar"></div>
+  </div>
+  <br>
   <div id="receipt-content">
     <p>
       あなたは慈善団体に{{ player.donate }}コインを寄付することを確認しました。

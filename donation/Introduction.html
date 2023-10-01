@@ -1,10 +1,14 @@
-{% load otree %}
+{{ extends 'global/Experiment.html' }}
 
 {% block title %}
   ラウンド情報
 {% endblock %}
 
 {% block content %}
+  <div class="progress" style="height: 20px">
+    <div class="progress-bar bg-success" role="progressbar" aria-label="Progress" aria-valuemin="0" id="progressbar"></div>
+  </div>
+  <br>
   <div id="your-info" class="alert alert-primary" role="alert">
     <b>あなたについて</b>
     <ul>

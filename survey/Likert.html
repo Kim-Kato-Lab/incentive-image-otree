@@ -1,9 +1,13 @@
-{{ load otree }}
+{{ extends 'global/Survey.html' }}
 {{ block title }}
 事後調査
 {{ endblock }}
 
 {{ block content }}
+<div class="progress" style="height: 20px">
+  <div class="progress-bar bg-success" role="progressbar" aria-label="Progress" aria-valuemin="0" aria-valuemax="9" id="progressbar"></div>
+</div>
+<br>
 <div id="common-question">
   <p><b>以下の各項目は、あなた自身にどのくらい当てはまりますか。各項目について当てはまるものを一つ選んでください。</b></p>
 </div>

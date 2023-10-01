@@ -1,9 +1,13 @@
-{{ load otree }}
+{{ extends 'global/Survey.html' }}
 {{ block title }}
 事後調査
 {{ endblock }}
 
 {{ block content }}
+<div class="progress" style="height: 20px;">
+  <div class="progress-bar bg-success" role="progressbar" aria-label="Progress" aria-valuemin="0" aria-valuemax="9" id="progressbar"></div>
+</div>
+<br>
 <div id="common-explain">
   <b>
     あなたと見ず知らずの他人が、お金をもらえることになりました。ただし、もらえるお金の金額には、ＡとＢの二つのパターンがあります。どちらの配分パターンを選ぶかは、あなたが決定でき、かつその配分を相手は知らないとします。このとき、あなたはＡとＢのどちらの配分パターンを選びますか。それぞれのケースについて、ＡかＢのどちらかを選んでください。

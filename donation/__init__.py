@@ -128,7 +128,14 @@ class Introduction(Page):
             your_rebate = int(player.rebate * 100),
             partner_coin = partner.endowment,
             partner_rebate = int(partner.rebate * 100)
-        ) 
+        )
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(
+            current = player.round_number,
+            max = C.NUM_ROUNDS
+        )
 
 
 class Donate(Page):
@@ -161,6 +168,13 @@ class Donate(Page):
             participant.rebate.append(player.rebate)
             participant.donate.append(player.donate)
             participant.receipt.append(player.receipt)
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(
+            current = player.round_number,
+            max = C.NUM_ROUNDS
+        )
 
 class ResultsWaitPage(WaitPage):
     pass
@@ -174,6 +188,13 @@ class Results(Page):
             partner_donate = partner.donate
         )
 
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(
+            current = player.round_number,
+            max = C.NUM_ROUNDS
+        )
+
 class Receipt(Page):
     @staticmethod
     def is_displayed(player: Player):
@@ -182,6 +203,13 @@ class Receipt(Page):
     @staticmethod
     def vars_for_template(player: Player):
         return dict(rebate = int(player.rebate * 100))
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(
+            current = player.round_number,
+            max = C.NUM_ROUNDS
+        )
 
 class ShuffleWaitPage(WaitPage):
     body_text = """

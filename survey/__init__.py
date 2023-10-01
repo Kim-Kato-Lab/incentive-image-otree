@@ -277,6 +277,10 @@ class Demographics(Page):
     def before_next_page(player: Player, timeout_happened):
         if player.academic_field != "social":
             player.economist = 0
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 1)
 
 class Economist(Page):
     template_name = 'survey/SimpleForm.html'
@@ -286,25 +290,45 @@ class Economist(Page):
     @staticmethod
     def is_displayed(player: Player):
         return player.academic_field == "social"
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 2)
 
 class Impression(Page):
     template_name = 'survey/SimpleForm.html'
     form_model = 'player'
     form_fields = ['impression', 'other_impression']
 
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 3)
+
 class Oblige(Page):
     template_name = 'survey/SimpleForm.html'
     form_model = 'player'
     form_fields = ['oblige', 'other_oblige']
 
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 4)
+
 class Likert(Page):
     form_model = 'player'
     form_fields = C.LIKERT["question"].keys()
+
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 5)
 
 class SocialClass(Page):
     template_name = 'survey/SimpleForm.html'
     form_model = 'player'
     form_fields = ['social_class']
+
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 6)
 
 class Donation(Page):
     template_name = 'survey/SimpleForm.html'
@@ -312,9 +336,17 @@ class Donation(Page):
     form_model = 'player'
     form_fields = ['past_donation']
 
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 7)
+
 class Allocation(Page):
     form_model = 'player'
     form_fields = C.INEQUALITY["question"].keys()
+
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 8)
 
 class PartialReport(Page):
     template_name = 'survey/SimpleForm.html'
@@ -324,6 +356,10 @@ class PartialReport(Page):
     @staticmethod
     def is_displayed(player: Player):
         return player.participant.partial_report
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return dict(page = 9)
 
 page_sequence = [
     Demographics,
