@@ -5,7 +5,12 @@
 
 {{ block content }}
 
-<div id="situation">
+<div id="note">
+  <p>以下の状況設定をよく読んで、質問1と質問2の設問に解答してください。</p>
+</div>
+
+<div id="situation" class="alert alert-info" role="alert">
+  <p><b>状況設定</b></p>
   <p>AさんとBさんはグループを組み、同じ慈善団体に寄付をする機会があります。</p>
   <div id="A-info">
     <b>Aさんについて</b>
@@ -27,7 +32,6 @@
       {{ endif }}
     </ul>
   </div>
-  <p>以下の設問について解答してください。</p>
 </div>
 
 <div id="A-quiz">

@@ -5,7 +5,8 @@
 
 {{ block content }}
 
-<div id="situation">
+<div id="situation" class="alert alert-info" role="alert">
+  <p><b>状況設定</b></p>
   <p>AさんとBさんはグループを組み、同じ慈善団体に寄付をする機会があります。</p>
   <div id="A-info">
     <b>Aさんについて</b>
@@ -27,7 +28,6 @@
       {{ endif }}
     </ul>
   </div>
-  <p>以下の設問について解答してください。</p>
 </div>
 
 <div id="A-quiz">
@@ -39,6 +39,9 @@
   </p>
   <ul>
     <li>
+      {{ if player.q1 != high_income_rebate_amount }}
+      <img src="{{ static 'global/image/incorrection.png'}}" width="20"/>
+      {{ endif }}
       あなたは寄付によっていくらの返金をもらえますか？ 整数（半角数字）で解答してください。
       <ul>
         <li>あなたの解答：{{ player.q1 }}コイン</li>
@@ -46,6 +49,9 @@
       </ul>
     </li>
     <li>
+      {{ if player.q2 != high_income_payoff }}
+      <img src="{{ static 'global/image/incorrection.png'}}" width="20"/>
+      {{ endif }}
       返金を受けた後、最終的にあなたの手元に残るコインはいくらですか？整数（半角数字）で解答してください。
       <ul>
         <li>あなたの解答：{{ player.q2 }}コイン</li>
@@ -53,6 +59,10 @@
       </ul>
     </li>
     <li>
+      {{ if player.q3 }}
+      {{ else }}
+      <img src="{{ static 'global/image/incorrection.png'}}" width="20"/>
+      {{ endif }}
       あなたのパートナーであるBさんは、あなたがいくら寄付したことを知っていますか？
       <ul>
         <li>
@@ -80,6 +90,9 @@
   </p>
   <ul>
     <li>
+      {{ if player.q4 != low_income_rebate_amount }}
+      <img src="{{ static 'global/image/incorrection.png'}}" width="20"/>
+      {{ endif }}
       あなたは寄付によっていくらの返金をもらえますか？ 整数（半角数字）で解答してください。
       <ul>
         <li>あなたの解答：{{ player.q4 }}コイン</li>
@@ -87,6 +100,9 @@
       </ul>
     </li>
     <li>
+      {{ if player.q5 != low_income_payoff }}
+      <img src="{{ static 'global/image/incorrection.png'}}" width="20"/>
+      {{ endif }}
       返金を受けた後、最終的にあなたの手元に残るコインはいくらですか？整数（半角数字）で解答してください。
       <ul>
         <li>あなたの解答：{{ player.q5 }}コイン</li>
@@ -94,6 +110,9 @@
       </ul>
     </li>
     <li>
+      {{ if player.q6 }}
+      <img src="{{ static 'global/image/incorrection.png'}}" width="20"/>
+      {{ endif }}
       あなたのパートナーであるAさんは、あなたがいくら寄付したことを知っていますか？
       <ul>
         <li>
@@ -110,7 +129,8 @@
   </ul>
 </div>
 
-<div id="comment">
+<div id="comment" class="alert alert-secondary" role="alert">
+  <p><b>解説</b></p>
   <p>各質問の3問目は状況設定に記載しているので、確認してください。</p>
   <p>
     Aさんの行動について：
