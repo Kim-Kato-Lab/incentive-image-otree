@@ -173,7 +173,9 @@ class Donate(Page):
     def js_vars(player: Player):
         return dict(
             current = player.round_number,
-            max = C.NUM_ROUNDS
+            max = C.NUM_ROUNDS,
+            rebate_rate = player.rebate,
+            endowment = player.endowment
         )
 
 class ResultsWaitPage(WaitPage):

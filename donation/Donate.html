@@ -38,8 +38,31 @@
       <p>
         あなたは<b>{{ player.endowment }}コイン</b>のうち、いくらまでなら寄付をしても良いですか？
       </p>
-    </div>
-
-    {% formfields %}
+      <p>
+        以下のフォームに数値を入力してください。
+        「計算する」ボタンを押せば、あなたの寄付額と報酬額を確認できます。
+        確認が終わりましたら、「次へ」ボタンを押してください。
+      </p>
+      <input type="number" name="donate" class="form-control" id="donate">
+      {{ formfield_errors 'donate' }}
+      <hr>
+      <button type="button" class="btn btn-outline-secondary" onclick="pi()">計算する</button>
+      <p>このラウンドが選ばれた場合の</p>
+      <ul>
+        <li>寄付額：<span id="calculator-donate"></span></li>
+        <li>
+          あなたの報酬額：<span id="calculator-payoff"></span>
+          <ul>
+            <li>寄付しなかった分のコイン：<span id="calculator-remain"></span></li>
+            <li>寄付したコインの一部の返金：<span id="calculator-rebate"></span></li>
+          </ul>
+        </li>
+      </ul>
+      <hr>
     {% next_button %}
+    </div>
 {% endblock %}
+
+{{ block scripts }}
+  <script type="text/javascript" src="{{ static 'global/js/pi.js' }}"></script>
+{{ endblock }}
