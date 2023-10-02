@@ -11,7 +11,7 @@ into account.
 class C(BaseConstants):
     NAME_IN_URL = 'donation'
     PLAYERS_PER_GROUP = 2
-    NUM_ROUNDS = 2
+    NUM_ROUNDS = 11
     ENDOWMENT = [1500, 500]
     REBATE = [
         [0.6, 0.1],
@@ -79,7 +79,7 @@ def set_role(group: Group):
         past_round = list(range(1, now_round))
         done = [group.in_round(n).rebate_list_idx for n in past_round]
         for i in done:
-            idx_list.pop(i)
+            idx_list.remove(i)
         pickup = random.choice(idx_list)
     group.rebate_list_idx = pickup
 

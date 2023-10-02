@@ -137,13 +137,15 @@ class Answer(Page):
             high_income_remain = high_income_remain,
             high_income_payoff = high_income_remain + high_income_rebate_amount,
             high_income_observe = 'いいえ',
+            response_high_income_observe = 'はい' if player.q6 else 'いいえ',
             low_income = C.ENDOWMENT[1],
             low_income_rebate = int(C.REBATE[1] * 100),
             low_income_donate = C.DONATE[1],
             low_income_rebate_amount = low_income_rebate_amount,
             low_income_remain = low_income_remain,
             low_income_payoff = low_income_remain + low_income_rebate_amount,
-            low_income_observe = 'はい' if player.reveal else 'いいえ'
+            low_income_observe = 'はい' if player.reveal else 'いいえ',
+            response_low_income_observe = 'はい' if player.q3 else 'いいえ',
         )
     
 class Finish(Page):

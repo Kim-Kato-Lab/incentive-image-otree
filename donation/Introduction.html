@@ -23,6 +23,17 @@
       <li>パートナーは、寄付額の<b>{{ partner_rebate }}%</b>を実験者が負担して、その分だけ返金を受けられます</li>
     </ul>
   </div>
+  {{ if group.reveal }}
+  <br>
+    <div id="observer-role" style="text-align: center;">
+      {{ if player.observer }}
+        <h3>パートナーはあなたの寄付額を確認できません</h3>
+      {{ else }}
+        <h3>パートナーはあなたの寄付額を確認できます</h3>
+      {{ endif }}
+    </div>
+  <br>
+  {{ endif }}
   <div id="confirm">
     <p>
       確認したら、以下の「次へ」ボタンを押してください。

@@ -59,20 +59,12 @@
       </ul>
     </li>
     <li>
-      {{ if player.q3 }}
-      {{ else }}
+      {{ if response_low_income_observe != low_income_observe }}
       <img src="{{ static 'global/image/incorrection.png'}}" width="20"/>
       {{ endif }}
       あなたのパートナーであるBさんは、あなたがいくら寄付したことを知っていますか？
       <ul>
-        <li>
-          あなたの解答：
-          {{ if player.q3 }}
-            はい
-          {{ else }}
-            いいえ
-          {{ endif }}
-        </li>
+        <li>あなたの解答：{{ response_low_income_observe }}</li>
         <li>正解：{{ low_income_observe }}</li>
       </ul>
     </li>
@@ -110,19 +102,12 @@
       </ul>
     </li>
     <li>
-      {{ if player.q6 }}
+      {{ if response_high_income_observe != high_income_observe }}
       <img src="{{ static 'global/image/incorrection.png'}}" width="20"/>
       {{ endif }}
       あなたのパートナーであるAさんは、あなたがいくら寄付したことを知っていますか？
       <ul>
-        <li>
-          あなたの解答：
-          {{ if player.q6 }}
-            はい
-          {{ else }}
-            いいえ
-          {{ endif }}
-        </li>
+        <li>あなたの解答：{{ response_high_income_observe }}</li>
         <li>正解：{{ high_income_observe }}</li>
       </ul>
     </li>

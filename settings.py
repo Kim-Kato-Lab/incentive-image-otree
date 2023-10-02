@@ -17,7 +17,9 @@ PARTICIPANT_FIELDS = [
     'donate',
     'receipt',
     'payoff_list',
-    'partial_report'
+    'partial_report',
+    'realized_endowment',
+    'realized_donation'
 ]
 SESSION_FIELDS = []
 
@@ -49,11 +51,10 @@ SESSION_CONFIGS = [
 
 ROOMS = [
     dict(
-        name='econ101',
-        display_name='Econ 101 class',
-        participant_label_file='_rooms/econ101.txt',
-    ),
-    dict(name='live_demo', display_name='Room for live demo (no participant labels)'),
+        name='socio',
+        display_name='Research Institute for Socionetwork Strategies (Kansai University)',
+        participant_label_file='_rooms/socio.txt'
+    )
 ]
 
 ADMIN_USERNAME = 'admin'

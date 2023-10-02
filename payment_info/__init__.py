@@ -35,7 +35,9 @@ class Payment(Page):
             participation_fee = player.session.config['participation_fee'],
             realized_payoff = participant.payoff,
             p4p = participant.payoff.to_real_world_currency(player.session),
-            get_money = participant.payoff_plus_participation_fee()
+            get_money = participant.payoff_plus_participation_fee(),
+            endowment = participant.realized_endowment,
+            donation = participant.realized_donation
         )
 
 

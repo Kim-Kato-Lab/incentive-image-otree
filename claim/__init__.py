@@ -80,14 +80,25 @@ def set_payoff(group: Group):
             participant.payoff_list = payoff_w_rebate
         
         # calculate realized payoff
-        pickup = random.sample(participant.payoff_list, 2)
-        participant.payoff = sum(pickup)
+        pickup_round = random.sample(list(range(len(endowment))), 2)
+        pickup_payoff = [participant.payoff_list[i] for i in pickup_round]
+        pickup_endowment = [endowment[i] for i in pickup_round]
+        pickup_donate = [donate[i] for i in pickup_round]
+        participant.payoff = sum(pickup_payoff)
+        participant.realized_endowment = sum(pickup_endowment)
+        participant.realized_donation = sum(pickup_donate)
 
 # PAGES
 class Introduction(Page):
     @staticmethod
     def vars_for_template(player: Player):
         return dict(opt_in = player.session.config['opt_in'])
+    
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        opt_in = player.session.config['opt_in']
+        if not opt_in:
+            player.participant.partial_report = False
 
 class Claim(Page):
     form_model = 'player'
