@@ -5,7 +5,7 @@ class C(BaseConstants):
     NAME_IN_URL = 'quiz'
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 10
-    ENDOWMENT = [300, 50]
+    ENDOWMENT = [1500, 500]
     DONATE = [100, 10]
     REBATE = [0.5, 0.1]
 
